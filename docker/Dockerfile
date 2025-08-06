@@ -30,7 +30,7 @@ RUN opam repo set-url default https://mirrors.sjtug.sjtu.edu.cn/git/opam-reposit
 RUN sudo apt-get update && sudo apt-get install -y \
   m4 bubblewrap aspcud rsync curl git
 
-# clone 源码
+# clone
 RUN git clone https://github.com/herd/herdtools7.git && \
     cd herdtools7 && \
     git checkout 7.56
