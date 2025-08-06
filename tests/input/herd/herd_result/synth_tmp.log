@@ -1,0 +1,288 @@
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.6689300537109375e-06
+
+Test R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x7=0;
+0:x5=0; 0:x7=1;
+0:x5=1; 0:x7=1;
+No
+Witnesses
+Positive: 0 Negative: 3
+Condition exists (0:x5=1 /\ 0:x7=0)
+Observation R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe Never 0 3
+Time R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe 0.00
+Hash=b8fbeff85833956cfda125e9101a2fac
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.430511474609375e-06
+
+Test R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x7=0;
+0:x5=0; 0:x7=1;
+0:x5=1; 0:x7=1;
+No
+Witnesses
+Positive: 0 Negative: 3
+Condition exists (0:x5=1 /\ 0:x7=0)
+Observation R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe Never 0 3
+Time R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe 0.00
+Hash=5d90668079c98e62a581e7f9547116c1
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/R_fencerelFence.rw.r_W_Fence_rw_rdRW_Coe_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.9073486328125e-06
+
+Test R_fencerelFence.rw.r_W_Fence_rw_rdRW_Coe_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x9=1;
+0:x5=0; 0:x9=2;
+0:x5=1; 0:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 4
+Condition exists (0:x9=2 /\ 0:x5=1)
+Observation R_fencerelFence.rw.r_W_Fence_rw_rdRW_Coe_Fence_rw_rwdWW_Rfe Never 0 4
+Time R_fencerelFence.rw.r_W_Fence_rw_rdRW_Coe_Fence_rw_rwdWW_Rfe 0.00
+Hash=ec607c7a456f46a037ee820d166600a7
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/R_fencerelFence.r.r_W_Fence_r_rdRW_Coe_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.9073486328125e-06
+
+Test R_fencerelFence.r.r_W_Fence_r_rdRW_Coe_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x9=1;
+0:x5=0; 0:x9=2;
+0:x5=1; 0:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 4
+Condition exists (0:x9=2 /\ 0:x5=1)
+Observation R_fencerelFence.r.r_W_Fence_r_rdRW_Coe_Fence_rw_rwdWW_Rfe Never 0 4
+Time R_fencerelFence.r.r_W_Fence_r_rdRW_Coe_Fence_rw_rwdWW_Rfe 0.00
+Hash=ac02fb1f226a596933eb5435cbb5d732
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/R_fencerelFence.w.r_W_Fence_w_rdRW_Coe_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.9073486328125e-06
+
+Test R_fencerelFence.w.r_W_Fence_w_rdRW_Coe_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x9=1;
+0:x5=0; 0:x9=2;
+0:x5=1; 0:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 4
+Condition exists (0:x9=2 /\ 0:x5=1)
+Observation R_fencerelFence.w.r_W_Fence_w_rdRW_Coe_Fence_rw_rwdWW_Rfe Never 0 4
+Time R_fencerelFence.w.r_W_Fence_w_rdRW_Coe_Fence_rw_rwdWW_Rfe 0.00
+Hash=db322325726adac58749c7607881eb2c
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.430511474609375e-06
+
+Test W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x7=0; 1:x9=1;
+0:x7=1; 1:x9=1;
+0:x7=1; 1:x9=2;
+No
+Witnesses
+Positive: 0 Negative: 4
+Condition exists (0:x7=0 /\ 1:x9=2)
+Observation W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe Never 0 4
+Time W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe 0.00
+Hash=772ace348264a27e145f127ff71fda67
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/R_fencerelFence.w.rw_W_Fence_w_rwdRW_Coe_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.1920928955078125e-06
+
+Test R_fencerelFence.w.rw_W_Fence_w_rwdRW_Coe_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x9=1;
+0:x5=0; 0:x9=2;
+0:x5=1; 0:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 4
+Condition exists (0:x9=2 /\ 0:x5=1)
+Observation R_fencerelFence.w.rw_W_Fence_w_rwdRW_Coe_Fence_rw_rwdWW_Rfe Never 0 4
+Time R_fencerelFence.w.rw_W_Fence_w_rwdRW_Coe_Fence_rw_rwdWW_Rfe 0.00
+Hash=724496f1b7d3d0f35c50f3d29e5457fe
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.9073486328125e-06
+
+Test W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x9=1; 1:x9=1;
+0:x9=1; 1:x9=2;
+0:x9=2; 1:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 5
+Condition exists (0:x9=2 /\ 1:x9=2)
+Observation W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe Never 0 5
+Time W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe 0.00
+Hash=04a7d76758a3c6c34d94404f0802bcc0
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.430511474609375e-06
+
+Test W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x9=1; 1:x9=1;
+0:x9=1; 1:x9=2;
+0:x9=2; 1:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 5
+Condition exists (0:x9=2 /\ 1:x9=2)
+Observation W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe Never 0 5
+Time W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe 0.00
+Hash=f44f39853ebc420ce6384f7eae8cd239
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.9073486328125e-06
+
+Test W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x9=1; 1:x9=1;
+0:x9=1; 1:x9=2;
+0:x9=2; 1:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 5
+Condition exists (0:x9=2 /\ 1:x9=2)
+Observation W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe Never 0 5
+Time W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe 0.00
+Hash=46aa06f95f2c3fbf4ce4fcc4bc909489
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.430511474609375e-06
+
+Test W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x9=1; 1:x9=1;
+0:x9=1; 1:x9=2;
+0:x9=2; 1:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 5
+Condition exists (0:x9=2 /\ 1:x9=2)
+Observation W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe Never 0 5
+Time W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe 0.00
+Hash=ba274a39989eca8e99e3eefbc42373aa
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_po_W_PodWW_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.6689300537109375e-06
+
+Test W_po_W_PodWW_Coe_Fence_rw_rwdWW_Coe Allowed
+States 4
+0:x9=1; 1:x9=1;
+0:x9=1; 1:x9=2;
+0:x9=2; 1:x9=1;
+0:x9=2; 1:x9=2;
+Ok
+Witnesses
+Positive: 1 Negative: 8
+Condition exists (0:x9=2 /\ 1:x9=2)
+Observation W_po_W_PodWW_Coe_Fence_rw_rwdWW_Coe Sometimes 1 8
+Time W_po_W_PodWW_Coe_Fence_rw_rwdWW_Coe 0.00
+Hash=ec604d78f3fb5cf31dca4cd7912cdf67
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/XLr_ctrl_R_DpCtrldR_Fre_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 5.9604644775390625e-06
+
+Test XLr_ctrl_R_DpCtrldR_Fre_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x7=0;
+0:x5=0; 0:x7=1;
+0:x5=1; 0:x7=1;
+No
+Witnesses
+Positive: 0 Negative: 3
+Condition exists (0:x5=1 /\ 0:x7=0)
+Observation XLr_ctrl_R_DpCtrldR_Fre_Fence_rw_rwdWW_Rfe Never 0 3
+Time XLr_ctrl_R_DpCtrldR_Fre_Fence_rw_rwdWW_Rfe 0.00
+Hash=3bcb6378208f50585e060c71eb8e1368
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/XLr_po_R_PodRR_Fre_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.430511474609375e-06
+
+Test XLr_po_R_PodRR_Fre_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x5=0; 0:x7=0;
+0:x5=0; 0:x7=1;
+0:x5=1; 0:x7=1;
+No
+Witnesses
+Positive: 0 Negative: 3
+Condition exists (0:x5=1 /\ 0:x7=0)
+Observation XLr_po_R_PodRR_Fre_Fence_rw_rwdWW_Rfe Never 0 3
+Time XLr_po_R_PodRR_Fre_Fence_rw_rwdWW_Rfe 0.00
+Hash=66fd3f056ba4a1901d8ace508c671510
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/AMO_po_W_Rmw_PodWW_Coe_Fence_rw_rwdWW_Rfe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.9073486328125e-06
+
+Test AMO_po_W_Rmw_PodWW_Coe_Fence_rw_rwdWW_Rfe Allowed
+States 3
+0:x6=0; 0:x10=1;
+0:x6=0; 0:x10=2;
+0:x6=1; 0:x10=1;
+No
+Witnesses
+Positive: 0 Negative: 4
+Condition exists (0:x10=2 /\ 0:x6=1)
+Observation AMO_po_W_Rmw_PodWW_Coe_Fence_rw_rwdWW_Rfe Never 0 4
+Time AMO_po_W_Rmw_PodWW_Coe_Fence_rw_rwdWW_Rfe 0.00
+Hash=d71e262e8587c27e78548037b7e6f1b0
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_po_XLr_PodWR_Fre_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.1920928955078125e-06
+
+Test W_po_XLr_PodWR_Fre_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x7=0; 1:x9=1;
+0:x7=1; 1:x9=1;
+0:x7=1; 1:x9=2;
+No
+Witnesses
+Positive: 0 Negative: 4
+Condition exists (0:x7=0 /\ 1:x9=2)
+Observation W_po_XLr_PodWR_Fre_Fence_rw_rwdWW_Coe Never 0 4
+Time W_po_XLr_PodWR_Fre_Fence_rw_rwdWW_Coe 0.00
+Hash=85853241ef06f58985872830f794a0fd
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_po_AMO_PodWR_Rmw_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.9073486328125e-06
+
+Test W_po_AMO_PodWR_Rmw_Coe_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x10=1; 1:x9=1;
+0:x10=1; 1:x9=2;
+0:x10=2; 1:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 5
+Condition exists (0:x10=2 /\ 1:x9=2)
+Observation W_po_AMO_PodWR_Rmw_Coe_Fence_rw_rwdWW_Coe Never 0 5
+Time W_po_AMO_PodWR_Rmw_Coe_Fence_rw_rwdWW_Coe 0.01
+Hash=dc15b572ad17f07728effb4e56def364
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_rfi_XLr_Rfi_PodRW_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.430511474609375e-06
+
+Test W_rfi_XLr_Rfi_PodRW_Coe_Fence_rw_rwdWW_Coe Allowed
+States 4
+0:x7=1; 0:x10=1; 1:x9=1;
+0:x7=2; 0:x10=1; 1:x9=1;
+0:x7=2; 0:x10=1; 1:x9=2;
+0:x7=2; 0:x10=2; 1:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 6
+Condition exists (0:x10=2 /\ 0:x7=2 /\ 1:x9=2)
+Observation W_rfi_XLr_Rfi_PodRW_Coe_Fence_rw_rwdWW_Coe Never 0 6
+Time W_rfi_XLr_Rfi_PodRW_Coe_Fence_rw_rwdWW_Coe 0.01
+Hash=e041f41900ced2fa76be04ed25f334d7
+
+[INFO] cmd: eval $(opam env); herd7 /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_C910/W_po_loc_XLr_PosWR_PodRW_Coe_Fence_rw_rwdWW_Coe.litmus -model /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/CAT/change/riscv-1.cat, time cost: 1.1920928955078125e-06
+
+Test W_po_loc_XLr_PosWR_PodRW_Coe_Fence_rw_rwdWW_Coe Allowed
+States 3
+0:x10=1; 1:x9=1;
+0:x10=1; 1:x9=2;
+0:x10=2; 1:x9=1;
+No
+Witnesses
+Positive: 0 Negative: 6
+Condition exists (0:x10=2 /\ 1:x9=2)
+Observation W_po_loc_XLr_PosWR_PodRW_Coe_Fence_rw_rwdWW_Coe Never 0 6
+Time W_po_loc_XLr_PosWR_PodRW_Coe_Fence_rw_rwdWW_Coe 0.01
+Hash=e0ee15a2e2a0f54dbea6be99fe212408
+
+[INFO] total time cost: 0.399185
