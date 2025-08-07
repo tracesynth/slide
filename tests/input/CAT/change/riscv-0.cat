@@ -120,7 +120,7 @@ and r37 = [R];addr;[W];po;[W]
 and r38 = [R];addr;[R];po;[W] 
 and r39 = [W];fencerel(Fence.r.rw);[W] 
 and r40 = [R];fencerel(Fence.rw.w);[R] 
-and r41 = [R];po;[W] 
+and r41 = [R];fencerel(Fence.w.w);[W] 
 and r42 = [W];fencerel(Fence.rw.w);[R] 
 and r43 = [R];fencerel(Fence.w.w);[R] 
 and r44 = [W];fencerel(Fence.w.w);[R] 
@@ -129,21 +129,28 @@ and r46 = [R];fencerel(Fence.r.w);[R]
 and r47 = [R];fencerel(Fence.w.r);[R] 
 and r48 = [R];fencerel(Fence.w.rw);[R] 
 and r49 = [W];fencerel(Fence.tso);[R] 
-and r50 = [W];fencerel(Fence.r.r);[R] 
-and r51 = [W];fencerel(Fence.r.w);[R] 
-and r52 = [R];addr;[W];po;[R] 
-and r53 = [R];data;[W];po;[R] 
-and r54 = [W];fencerel(Fence.w.r);[W] 
-and r55 = [W];fencerel(Fence.r.w);[W] 
-and r56 = [W];fencerel(Fence.r.r);[W] 
-and r57 = [W];fencerel(Fence.rw.r);[W] 
-and r58 = [R];po;[XLr] 
-and r59 = [RL];po;[R] 
-and r60 = [AMO];po\(po-loc);[R] 
-and r61 = [XLr];po;[R] 
-and r62 = [W];po;[XLr] 
-and r63 = [W];po;[AMO] 
-and r64 = [XSc];po;[W] 
+and r50 = [R];fencerel(Fence.w.rw);[W] 
+and r51 = [R];fencerel(Fence.w.r);[W] 
+and r52 = [R];fencerel(Fence.r.r);[W] 
+and r53 = [W];fencerel(Fence.r.r);[R] 
+and r54 = [W];fencerel(Fence.r.w);[R] 
+and r55 = [R];fencerel(Fence.rw.r);[W] 
+and r56 = [R];addr;[W];po;[R] 
+and r57 = [R];addr;[R];po;[R] 
+and r58 = [R];data;[W];po;[R] 
+and r59 = [W];fencerel(Fence.w.r);[W] 
+and r60 = [W];fencerel(Fence.r.w);[W] 
+and r61 = [W];fencerel(Fence.r.r);[W] 
+and r62 = [W];fencerel(Fence.rw.r);[W] 
+and r63 = [R];po;[XLr] 
+and r64 = [RL];po;[R] 
+and r65 = [AMO];po\(po-loc);[R] 
+and r66 = [XLr];po;[R] 
+and r67 = [AMO];po;[W] 
+and r68 = [R];po;[AMO] 
+and r69 = [XLr];po;[W] 
+and r70 = [W];po;[XLr] 
+and r71 = [W];po;[AMO] 
 
 let ppo = 
  r1
@@ -210,6 +217,13 @@ let ppo =
 | r62
 | r63
 | r64
+| r65
+| r66
+| r67
+| r68
+| r69
+| r70
+| r71
 
 
 (**********)

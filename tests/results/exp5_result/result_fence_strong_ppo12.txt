@@ -21,4 +21,4 @@ W;fence_w_r;W
 W;fence_r_r;W
 W;fence_r_w;W
 W;fence_rw_r;W
-time:  54.1893630027771
+time:  35.658612966537476

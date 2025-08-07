@@ -126,7 +126,7 @@ def litmus_run_get_log(litmus_name, litmus_path, run_time = 10):
 
 def litmus_run_until_match(litmus_name, litmus_path, state):
     print(litmus_name)
-    # assert False, "don't use"
+    assert False, "don't use"
     # run until max time
     run_time = 10
     max_run_time = config.MAX_LITMUS7_TIME

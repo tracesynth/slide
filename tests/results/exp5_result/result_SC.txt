@@ -1,5 +1,0 @@
-R;po;R
-R;po;W
-W;po;W
-W;po;R
-time:  224.13768863677979

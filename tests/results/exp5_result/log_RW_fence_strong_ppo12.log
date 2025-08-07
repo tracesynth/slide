@@ -81,7 +81,7 @@ States 3
 [x]=1; [y]=1;  => 1
 [x]=1; [y]=2;  => 1
 [x]=2; [y]=1;  => 1
-Time 2+2W+fence.r.rw+fence.rw.rw  0.0439s
+Time 2+2W+fence.r.rw+fence.rw.rw  0.0155s
 #Executions: 24
 
 validate litmus by cur_mm
@@ -100,7 +100,7 @@ States 4
 [x]=1; [y]=2;  => 1
 [x]=2; [y]=1;  => 1
 [x]=2; [y]=2;  => 1
-Time 2+2W+fence.r.rw+fence.rw.rw  0.0332s
+Time 2+2W+fence.r.rw+fence.rw.rw  0.0102s
 #Executions: 24
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/RELAX/Fence.r.rwdWW/2+2W+fence.r.rw+fence.rw.rw.litmus
@@ -122,10 +122,10 @@ from this path get ppo
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True
 candidate_add_ppo W;po;W
 all_rels
-rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
@@ -165,15 +165,28 @@ add_rels_final
 add rel final P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 add rel final P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['po', 'fence_r_rw']
 check all rels
-check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 check rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 check rel P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['po', 'fence_r_rw']
+need insert
+enter get_path_from_e1_to_e2_by_ppo
+events sequence
+P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, is write event:True
+P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, is write event:True
+ei,ej,relations, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	(W), P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	(W), ['po', 'fence_r_rw']
+this path is True
+(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')
+this path is True
+(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_r_rw')
+get_all_paths_from_e1_to_e2 [[(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')], [(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_r_rw')]]
+need_check_ppo [W];po;[W] target_ppo [W];po;[W]
+insert_path [(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')]
 need insert
 enter get_path_from_e1_to_e2_by_ppo
 events sequence
@@ -190,40 +203,12 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw
 need_check_ppo [W];fencerel(Fence.rw.rw);[W] target_ppo [W];po;[W]
 need_check_ppo [W];po;[W] target_ppo [W];po;[W]
 insert_path [(P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, 'po')]
-need insert
-enter get_path_from_e1_to_e2_by_ppo
-events sequence
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, is write event:True
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, is write event:True
-ei,ej,relations, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	(W), P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	(W), ['po', 'fence_r_rw']
-this path is True
-(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')
-this path is True
-(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_r_rw')
-get_all_paths_from_e1_to_e2 [[(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')], [(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_r_rw')]]
-need_check_ppo [W];po;[W] target_ppo [W];po;[W]
-insert_path [(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	]]
+filter_cycle [[P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	]]
 ppo [W];po;[W]
 e1 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
 e2 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
 cycle str
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-cycle str after change
-P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-cycle str after change
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
-cycle str after change
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
@@ -239,10 +224,10 @@ from this path get ppo
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True
 candidate_add_ppo W;fence_r_rw;W
 all_rels
-rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
@@ -267,10 +252,10 @@ need_check_ppo [W];fencerel(Fence.r.rw);[W] target_ppo [W];fencerel(Fence.r.rw);
 add_rels_final
 add rel final P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['po', 'fence_r_rw']
 check all rels
-check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
@@ -290,26 +275,11 @@ need_check_ppo [W];po;[W] target_ppo [W];fencerel(Fence.r.rw);[W]
 need_check_ppo [W];fencerel(Fence.r.rw);[W] target_ppo [W];fencerel(Fence.r.rw);[W]
 insert_path [(P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_r_rw')]
 {}
-filter_cycle [[P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	]]
+filter_cycle [[P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	]]
 ppo [W];fencerel(Fence.r.rw);[W]
 e1 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
 e2 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
 cycle str
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-cycle str after change
-P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-cycle str after change
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
-cycle str after change
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
@@ -321,7 +291,7 @@ other_single_ppo coe;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.r.rw);[W]
 other_single_ppo justify coe;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.r.rwdWW Coe Fence.rw.rwdWW Coe
-stengthen state, [x]=2; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0f7bbf0> [P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c21652b0>] False
+stengthen state, [x]=2; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c5682f0> [P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9d1577a0>] False
 {0:x5=2; 0:x7=1; 1:x5=2; 1:x7=1; 0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0         |         P1          ;
 <0x00> sw x5, 0(x6) | <0x00> sw x5, 0(x6) ;
@@ -337,7 +307,7 @@ States 4
 [x]=1; [y]=2;  => 1
 [x]=2; [y]=1;  => 1
 [x]=2; [y]=2;  => 1
-Time 2+2W+fence.r.rw+fence.rw.rw  0.0287s
+Time 2+2W+fence.r.rw+fence.rw.rw  0.0089s
 #Executions: 12
 
 complete exe list
@@ -867,7 +837,7 @@ States 3
 1:x5=0; 1:x7=0;  => 1
 1:x5=0; 1:x7=1;  => 1
 1:x5=1; 1:x7=1;  => 1
-Time MP+fence.rw.rw+fence.rw.w  0.0365s
+Time MP+fence.rw.rw+fence.rw.w  0.0145s
 #Executions: 18
 
 validate litmus by cur_mm
@@ -886,7 +856,7 @@ States 4
 1:x5=0; 1:x7=1;  => 1
 1:x5=1; 1:x7=0;  => 1
 1:x5=1; 1:x7=1;  => 1
-Time MP+fence.rw.rw+fence.rw.w  0.0325s
+Time MP+fence.rw.rw+fence.rw.w  0.0144s
 #Executions: 18
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/RELAX/Fence.rw.wdRR/MP+fence.rw.rw+fence.rw.w.litmus
@@ -908,8 +878,8 @@ from this path get ppo
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False
 candidate_add_ppo R;po;R
 all_rels
-rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -934,8 +904,8 @@ need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False ['po', 'fence_rw_w']
 check all rels
-check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -975,8 +945,8 @@ from this path get ppo
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False
 candidate_add_ppo R;fence_rw_w;R
 all_rels
-rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -1002,8 +972,8 @@ need_check_ppo [R];fencerel(Fence.rw.w);[R] target_ppo [R];fencerel(Fence.rw.w);
 add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False ['po', 'fence_rw_w']
 check all rels
-check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -1040,7 +1010,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];rfe
 path_single_ppo justify [R];fencerel(Fence.rw.w);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];rfe
 diy_cycle Fence.rw.wdRR Fre Fence.rw.rwdWW Rfe
-stengthen state, 1:x5=1; 1:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c1981a90> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0f5ff80>] False
+stengthen state, 1:x5=1; 1:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9d050260> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9d049c70>] False
 {0:x5=1; 0:x6=x; 0:x7=y; 1:x6=y; 1:x8=x}
          P0         |         P1          ;
 <0x00> sw x5, 0(x6) | <0x00> lw x5, 0(x6) ;
@@ -1056,7 +1026,7 @@ States 4
 1:x5=0; 1:x7=1;  => 1
 1:x5=1; 1:x7=0;  => 1
 1:x5=1; 1:x7=1;  => 1
-Time MP+fence.rw.rw+fence.rw.w  0.0275s
+Time MP+fence.rw.rw+fence.rw.w  0.0111s
 #Executions: 9
 
 complete exe list
@@ -1551,7 +1521,7 @@ States 3
 0:x5=0; 1:x5=0;  => 1
 0:x5=0; 1:x5=1;  => 1
 0:x5=1; 1:x5=0;  => 1
-Time LB+fence.w.w+fence.rw.rw  0.0422s
+Time LB+fence.w.w+fence.rw.rw  0.0156s
 #Executions: 18
 
 validate litmus by cur_mm
@@ -1570,7 +1540,7 @@ States 4
 0:x5=0; 1:x5=1;  => 1
 0:x5=1; 1:x5=0;  => 1
 0:x5=1; 1:x5=1;  => 1
-Time LB+fence.w.w+fence.rw.rw  0.0334s
+Time LB+fence.w.w+fence.rw.rw  0.0154s
 #Executions: 18
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/RELAX/Fence.w.wdRW/LB+fence.w.w+fence.rw.rw.litmus
@@ -1592,8 +1562,8 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 False True
 candidate_add_ppo R;po;W
 all_rels
-rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 False True ['fence', 'po', 'fence_rw_rw']
@@ -1633,13 +1603,26 @@ add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 False True ['fence', 'po', 'fence_rw_rw']
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 False True ['po', 'fence_w_w']
 check all rels
-check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 check rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 False True ['fence', 'po', 'fence_rw_rw']
 check rel P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 False True ['fence', 'po', 'fence_rw_rw']
 check rel P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 False True ['po', 'fence_w_w']
+need insert
+enter get_path_from_e1_to_e2_by_ppo
+events sequence
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, is write event:False
+P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, is write event:True
+ei,ej,relations, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	(R), P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	(W), ['po', 'fence_w_w']
+this path is True
+(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')
+this path is True
+(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_w_w')
+get_all_paths_from_e1_to_e2 [[(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')], [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_w_w')]]
+need_check_ppo [R];po;[W] target_ppo [R];po;[W]
+insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')]
 need insert
 enter get_path_from_e1_to_e2_by_ppo
 events sequence
@@ -1656,30 +1639,12 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	sw
 need_check_ppo [R];fencerel(Fence.rw.rw);[W] target_ppo [R];po;[W]
 need_check_ppo [R];po;[W] target_ppo [R];po;[W]
 insert_path [(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, 'po')]
-need insert
-enter get_path_from_e1_to_e2_by_ppo
-events sequence
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, is write event:False
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, is write event:True
-ei,ej,relations, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	(R), P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	(W), ['po', 'fence_w_w']
-this path is True
-(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')
-this path is True
-(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_w_w')
-get_all_paths_from_e1_to_e2 [[(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')], [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_w_w')]]
-need_check_ppo [R];po;[W] target_ppo [R];po;[W]
-insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	]]
+filter_cycle [[P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	]]
 ppo [R];po;[W]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
 cycle str
-P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-cycle str after change
 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
@@ -1700,8 +1665,8 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 False True
 candidate_add_ppo R;fence_w_w;W
 all_rels
-rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 False True ['fence', 'po', 'fence_rw_rw']
@@ -1726,8 +1691,8 @@ need_check_ppo [R];fencerel(Fence.w.w);[W] target_ppo [R];fencerel(Fence.w.w);[W
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 False True ['po', 'fence_w_w']
 check all rels
-check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 True True ['coe']
 check rel P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	 False True ['fence', 'po', 'fence_rw_rw']
@@ -1747,16 +1712,11 @@ need_check_ppo [R];po;[W] target_ppo [R];fencerel(Fence.w.w);[W]
 need_check_ppo [R];fencerel(Fence.w.w);[W] target_ppo [R];fencerel(Fence.w.w);[W]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, 'fence_w_w')]
 {}
-filter_cycle [[P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	]]
+filter_cycle [[P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	]]
 ppo [R];fencerel(Fence.w.w);[W]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
 cycle str
-P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
-P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
-cycle str after change
 P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	
@@ -1773,7 +1733,7 @@ other_single_ppo rfe;[R];fencerel(Fence.rw.rw);[W];rfe
 path_single_ppo justify [R];fencerel(Fence.w.w);[W]
 other_single_ppo justify rfe;[R];fencerel(Fence.rw.rw);[W];rfe
 diy_cycle Fence.w.wdRW Rfe Fence.rw.rwdRW Rfe
-stengthen state, 0:x5=1; 1:x5=1;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0f79640> [P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c1981ee0>] False
+stengthen state, 0:x5=1; 1:x5=1;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c417410> [P0: <0x08>	sw x7_p0_0, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	sw x7_p1_0, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9d1789e0>] False
 {0:x7=1; 1:x7=1; 0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0         |         P1          ;
 <0x00> lw x5, 0(x6) | <0x00> lw x5, 0(x6) ;
@@ -1789,7 +1749,7 @@ States 4
 0:x5=0; 1:x5=1;  => 1
 0:x5=1; 1:x5=0;  => 1
 0:x5=1; 1:x5=1;  => 1
-Time LB+fence.w.w+fence.rw.rw  0.0280s
+Time LB+fence.w.w+fence.rw.rw  0.0114s
 #Executions: 9
 
 complete exe list
@@ -2466,7 +2426,7 @@ States 3
 0:x7=0; 1:x7=1;  => 1
 0:x7=1; 1:x7=0;  => 1
 0:x7=1; 1:x7=1;  => 1
-Time SB+fence.rw.w+fence.rw.rw  0.0497s
+Time SB+fence.rw.w+fence.rw.rw  0.0190s
 #Executions: 18
 
 validate litmus by cur_mm
@@ -2485,7 +2445,7 @@ States 4
 0:x7=0; 1:x7=1;  => 1
 0:x7=1; 1:x7=0;  => 1
 0:x7=1; 1:x7=1;  => 1
-Time SB+fence.rw.w+fence.rw.rw  0.0447s
+Time SB+fence.rw.w+fence.rw.rw  0.0184s
 #Executions: 18
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/RELAX/Fence.rw.wdWR/SB+fence.rw.w+fence.rw.rw.litmus
@@ -2507,10 +2467,10 @@ from this path get ppo
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
-rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
-rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
+rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
+rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 False True ['fre']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
 rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['fence', 'po', 'fence_rw_rw']
@@ -2550,10 +2510,10 @@ add_rels_final
 add rel final P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['fence', 'po', 'fence_rw_rw']
 add rel final P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_rw_w']
 check all rels
-check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
-check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
+check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
+check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 False True ['fre']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
 check rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['fence', 'po', 'fence_rw_rw']
@@ -2609,10 +2569,10 @@ from this path get ppo
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False
 candidate_add_ppo W;fence_rw_w;R
 all_rels
-rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
-rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
+rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
+rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 False True ['fre']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
 rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['fence', 'po', 'fence_rw_rw']
@@ -2637,10 +2597,10 @@ need_check_ppo [W];fencerel(Fence.rw.w);[R] target_ppo [W];fencerel(Fence.rw.w);
 add_rels_final
 add rel final P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_rw_w']
 check all rels
-check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
-check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
+check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
+check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 False True ['fre']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
 check rel P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['fence', 'po', 'fence_rw_rw']
@@ -2676,7 +2636,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[R];fre
 path_single_ppo justify [W];fencerel(Fence.rw.w);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[R];fre
 diy_cycle Fence.rw.wdWR Fre Fence.rw.rwdWR Fre
-stengthen state, 0:x7=0; 1:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0ffe510> [P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c1983dd0>] False
+stengthen state, 0:x7=0; 1:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c43af30> [P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9d7060f0>] False
 {0:x5=1; 1:x5=1; 0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0         |         P1          ;
 <0x00> sw x5, 0(x6) | <0x00> sw x5, 0(x6) ;
@@ -2692,7 +2652,7 @@ States 4
 0:x7=0; 1:x7=1;  => 1
 0:x7=1; 1:x7=0;  => 1
 0:x7=1; 1:x7=1;  => 1
-Time SB+fence.rw.w+fence.rw.rw  0.0277s
+Time SB+fence.rw.w+fence.rw.rw  0.0117s
 #Executions: 9
 
 complete exe list
@@ -3201,7 +3161,7 @@ States 3
 1:x5=0; 1:x7=0;  => 1
 1:x5=0; 1:x7=1;  => 1
 1:x5=1; 1:x7=1;  => 1
-Time MP+fence.w.ws  0.0375s
+Time MP+fence.w.ws  0.0154s
 #Executions: 18
 
 validate litmus by cur_mm
@@ -3220,7 +3180,7 @@ States 4
 1:x5=0; 1:x7=1;  => 1
 1:x5=1; 1:x7=0;  => 1
 1:x5=1; 1:x7=1;  => 1
-Time MP+fence.w.ws  0.0321s
+Time MP+fence.w.ws  0.0145s
 #Executions: 18
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/RELAX/Fence.w.wdRR/MP+fence.w.ws.litmus
@@ -3242,8 +3202,8 @@ from this path get ppo
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False
 candidate_add_ppo R;po;R
 all_rels
-rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3268,8 +3228,8 @@ need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False ['po', 'fence_w_w']
 check all rels
-check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3289,16 +3249,11 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	lw
 need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 insert_path [(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	]]
+filter_cycle [[P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	]]
 ppo [R];po;[R]
 e1 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 e2 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 cycle str
-P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
-P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
-P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-cycle str after change
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
@@ -3314,8 +3269,8 @@ from this path get ppo
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False
 candidate_add_ppo R;fence_w_w;R
 all_rels
-rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3341,8 +3296,8 @@ need_check_ppo [R];fencerel(Fence.w.w);[R] target_ppo [R];fencerel(Fence.w.w);[R
 add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 False False ['po', 'fence_w_w']
 check all rels
-check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3363,16 +3318,11 @@ need_check_ppo [R];po;[R] target_ppo [R];fencerel(Fence.w.w);[R]
 need_check_ppo [R];fencerel(Fence.w.w);[R] target_ppo [R];fencerel(Fence.w.w);[R]
 insert_path [(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, 'fence_w_w')]
 {}
-filter_cycle [[P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	]]
+filter_cycle [[P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	]]
 ppo [R];fencerel(Fence.w.w);[R]
 e1 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 e2 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 cycle str
-P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
-P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
-P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
-cycle str after change
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
@@ -3384,7 +3334,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];rfe
 path_single_ppo justify [R];fencerel(Fence.w.w);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];rfe
 diy_cycle Fence.w.wdRR Fre Fence.rw.rwdWW Rfe
-stengthen state, 1:x5=1; 1:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0f7ac60> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0ffe480>] False
+stengthen state, 1:x5=1; 1:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c43a5a0> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c56ac90>] False
 {0:x5=1; 0:x6=x; 0:x7=y; 1:x6=y; 1:x8=x}
          P0         |         P1          ;
 <0x00> sw x5, 0(x6) | <0x00> lw x5, 0(x6) ;
@@ -3400,7 +3350,7 @@ States 4
 1:x5=0; 1:x7=1;  => 1
 1:x5=1; 1:x7=0;  => 1
 1:x5=1; 1:x7=1;  => 1
-Time MP+fence.w.ws  0.0273s
+Time MP+fence.w.ws  0.0113s
 #Executions: 9
 
 complete exe list
@@ -3788,7 +3738,7 @@ States 3
 1:x7=0; [y]=1;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.w.ws  0.0480s
+Time R+fence.w.ws  0.0173s
 #Executions: 24
 
 validate litmus by cur_mm
@@ -3807,7 +3757,7 @@ States 4
 1:x7=0; [y]=2;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.w.ws  0.0366s
+Time R+fence.w.ws  0.0154s
 #Executions: 24
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/RELAX/Fence.w.wdWR/R+fence.w.ws.litmus
@@ -3829,9 +3779,9 @@ from this path get ppo
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
+rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3856,9 +3806,9 @@ need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 add_rels_final
 add rel final P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['po', 'fence_w_w']
 check all rels
+check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3913,9 +3863,9 @@ from this path get ppo
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False
 candidate_add_ppo W;fence_w_w;R
 all_rels
+rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3941,9 +3891,9 @@ need_check_ppo [W];fencerel(Fence.w.w);[R] target_ppo [W];fencerel(Fence.w.w);[R
 add_rels_final
 add rel final P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['po', 'fence_w_w']
 check all rels
+check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -3995,7 +3945,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.w.w);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.w.wdWR Fre Fence.rw.rwdWW Coe
-stengthen state, 1:x7=0; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0e66510> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0f79010>] False
+stengthen state, 1:x7=0; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c44ade0> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c43b560>] False
 {0:x5=1; 1:x5=2; 0:x6=x; 0:x7=y; 1:x6=y; 1:x8=x}
          P0         |         P1          ;
 <0x00> sw x5, 0(x6) | <0x00> sw x5, 0(x6) ;
@@ -4011,7 +3961,7 @@ States 4
 1:x7=0; [y]=2;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.w.ws  0.0304s
+Time R+fence.w.ws  0.0114s
 #Executions: 12
 
 complete exe list
@@ -4534,7 +4484,7 @@ States 3
 1:x7=0; [y]=1;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.rw.w+fence.r.rw  0.0474s
+Time R+fence.rw.w+fence.r.rw  0.0171s
 #Executions: 24
 
 validate litmus by cur_mm
@@ -4553,7 +4503,7 @@ States 4
 1:x7=0; [y]=2;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.rw.w+fence.r.rw  0.0368s
+Time R+fence.rw.w+fence.r.rw  0.0153s
 #Executions: 24
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/RELAX/Fence.r.rwdWR/R+fence.rw.w+fence.r.rw.litmus
@@ -4575,9 +4525,9 @@ from this path get ppo
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
+rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -4602,9 +4552,9 @@ need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 add_rels_final
 add rel final P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['po', 'fence_r_rw']
 check all rels
+check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -4624,11 +4574,26 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	lw
 need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 insert_path [(P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	]]
+filter_cycle [[P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	]]
 ppo [W];po;[R]
 e1 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
 e2 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 cycle str
+P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
+P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
+P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
+cycle str after change
+P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
+P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
+P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
+P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
+cycle str after change
+P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
+P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
+P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
+cycle str after change
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
@@ -4644,9 +4609,9 @@ from this path get ppo
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False
 candidate_add_ppo W;fence_r_rw;R
 all_rels
+rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -4672,9 +4637,9 @@ need_check_ppo [W];fencerel(Fence.r.rw);[R] target_ppo [W];fencerel(Fence.r.rw);
 add_rels_final
 add rel final P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['po', 'fence_r_rw']
 check all rels
+check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 True True ['coe']
 check rel --: None P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
-check rel --: None P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 True True ['coe']
 check rel P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	 False True ['fre']
@@ -4695,11 +4660,26 @@ need_check_ppo [W];po;[R] target_ppo [W];fencerel(Fence.r.rw);[R]
 need_check_ppo [W];fencerel(Fence.r.rw);[R] target_ppo [W];fencerel(Fence.r.rw);[R]
 insert_path [(P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, 'fence_r_rw')]
 {}
-filter_cycle [[P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	, P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	]]
+filter_cycle [[P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	]]
 ppo [W];fencerel(Fence.r.rw);[R]
 e1 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
 e2 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 cycle str
+P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
+P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
+P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
+cycle str after change
+P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
+P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
+P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
+P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
+cycle str after change
+P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	
+P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
+P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
+cycle str after change
 P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	
 P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	
 P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	
@@ -4711,7 +4691,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.r.rw);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.r.rwdWR Fre Fence.rw.rwdWW Coe
-stengthen state, 1:x7=0; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0e4d940> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0ffd9a0>] False
+stengthen state, 1:x7=0; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c44b140> [P1: <0x08>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	sw x5_p0_0, 0(x6_p0_0)	, P0: <0x08>	sw x5_p0_0, 0(x7_p0_0)	, P1: <0x00>	sw x5_p1_0, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c415bb0>] False
 {0:x5=1; 1:x5=2; 0:x6=x; 0:x7=y; 1:x6=y; 1:x8=x}
          P0         |         P1          ;
 <0x00> sw x5, 0(x6) | <0x00> sw x5, 0(x6) ;
@@ -4727,7 +4707,7 @@ States 4
 1:x7=0; [y]=2;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.rw.w+fence.r.rw  0.0298s
+Time R+fence.rw.w+fence.r.rw  0.0113s
 #Executions: 12
 
 complete exe list
@@ -5327,7 +5307,7 @@ States 3
 0:x5=0; 0:x7=0;  => 1
 0:x5=0; 0:x7=1;  => 1
 0:x5=1; 0:x7=1;  => 1
-Time R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe  0.0421s
+Time R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe  0.0156s
 #Executions: 18
 
 validate litmus by cur_mm
@@ -5348,7 +5328,7 @@ States 4
 0:x5=0; 0:x7=1;  => 1
 0:x5=1; 0:x7=0;  => 1
 0:x5=1; 0:x7=1;  => 1
-Time R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe  0.0354s
+Time R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe  0.0157s
 #Executions: 18
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe.litmus
@@ -5370,8 +5350,8 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False
 candidate_add_ppo R;po;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -5396,8 +5376,8 @@ need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False ['po', 'fence_r_w']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -5417,16 +5397,11 @@ get_all_paths_from_e1_to_e2 [[(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	lw
 need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	]]
+filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	]]
 ppo [R];po;[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-cycle str after change
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
@@ -5452,8 +5427,8 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False
 candidate_add_ppo R;fence_r_w;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -5479,8 +5454,8 @@ need_check_ppo [R];fencerel(Fence.r.w);[R] target_ppo [R];fencerel(Fence.r.w);[R
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False ['po', 'fence_r_w']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -5501,16 +5476,11 @@ need_check_ppo [R];po;[R] target_ppo [R];fencerel(Fence.r.w);[R]
 need_check_ppo [R];fencerel(Fence.r.w);[R] target_ppo [R];fencerel(Fence.r.w);[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, 'fence_r_w')]
 {}
-filter_cycle [[P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	]]
+filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	]]
 ppo [R];fencerel(Fence.r.w);[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-cycle str after change
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
@@ -5532,7 +5502,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];rfe
 path_single_ppo justify [R];fencerel(Fence.r.w);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];rfe
 diy_cycle Fence.r.wdRR Fre Fence.rw.rwdWW Rfe
-stengthen state, 0:x5=1; 0:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0e7e840> [P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0ffd7f0>] False
+stengthen state, 0:x5=1; 0:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c4b94f0> [P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c587710>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0         |         P1           ;
 <0x00> lw x5, 0(x6) | <0x00> ori x5, x0, 1 ;
@@ -5550,7 +5520,7 @@ States 4
 0:x5=0; 0:x7=1;  => 1
 0:x5=1; 0:x7=0;  => 1
 0:x5=1; 0:x7=1;  => 1
-Time R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe  0.0296s
+Time R_fencerelFence.r.w_R_Fence_r_wdRR_Fre_Fence_rw_rwdWW_Rfe  0.0120s
 #Executions: 9
 
 complete exe list
@@ -6357,7 +6327,7 @@ States 3
 1:x5=0; 1:x9=0;  => 1
 1:x5=0; 1:x9=1;  => 1
 1:x5=1; 1:x9=1;  => 1
-Time MP+fence.rw.rw+ctrlfence.w.r  0.1028s
+Time MP+fence.rw.rw+ctrlfence.w.r  0.0244s
 #Executions: 36
 
 validate litmus by cur_mm
@@ -6378,7 +6348,7 @@ States 4
 1:x5=0; 1:x9=1;  => 1
 1:x5=1; 1:x9=0;  => 1
 1:x5=1; 1:x9=1;  => 1
-Time MP+fence.rw.rw+ctrlfence.w.r  0.1043s
+Time MP+fence.rw.rw+ctrlfence.w.r  0.0253s
 #Executions: 36
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/HAND/MP+fence.rw.rw+ctrlfence.w.r.litmus
@@ -6403,8 +6373,8 @@ from this path get ppo
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 False False
 candidate_add_ppo R;ctrl;R
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -6431,8 +6401,8 @@ need_check_ppo [R];ctrl;[R] target_ppo [R];ctrl;[R]
 add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 False False ['ctrl', 'po', 'fence_w_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -6454,11 +6424,16 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw
 need_check_ppo [R];ctrl;[R] target_ppo [R];ctrl;[R]
 insert_path [(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, 'ctrl')]
 {}
-filter_cycle [[P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	]]
+filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
 ppo [R];ctrl;[R]
 e1 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 e2 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
 cycle str
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
+P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
+P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
+cycle str after change
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
@@ -6474,8 +6449,8 @@ from this path get ppo
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 False False
 candidate_add_ppo R;po;R
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -6503,8 +6478,8 @@ need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 False False ['ctrl', 'po', 'fence_w_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -6527,11 +6502,16 @@ need_check_ppo [R];ctrl;[R] target_ppo [R];po;[R]
 need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 insert_path [(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	]]
+filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
 ppo [R];po;[R]
 e1 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 e2 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
 cycle str
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
+P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
+P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
+cycle str after change
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
@@ -6547,8 +6527,8 @@ from this path get ppo
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 False False
 candidate_add_ppo R;fence_w_r;R
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 rel P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -6577,8 +6557,8 @@ need_check_ppo [R];fencerel(Fence.w.r);[R] target_ppo [R];fencerel(Fence.w.r);[R
 add_rels_final
 add rel final P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 False False ['ctrl', 'po', 'fence_w_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	 True False ['rfe']
 check rel P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -6602,11 +6582,16 @@ need_check_ppo [R];po;[R] target_ppo [R];fencerel(Fence.w.r);[R]
 need_check_ppo [R];fencerel(Fence.w.r);[R] target_ppo [R];fencerel(Fence.w.r);[R]
 insert_path [(P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, 'fence_w_r')]
 {}
-filter_cycle [[P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	]]
+filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
 ppo [R];fencerel(Fence.w.r);[R]
 e1 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 e2 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
 cycle str
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
+P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
+P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
+cycle str after change
 P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	
 P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
@@ -6618,7 +6603,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];rfe
 path_single_ppo justify [R];fencerel(Fence.w.r);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];rfe
 diy_cycle Fence.w.rdRR Fre Fence.rw.rwdWW Rfe
-stengthen state, 1:x5=1; 1:x9=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0ec2ae0> [P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0ea10a0>] False
+stengthen state, 1:x5=1; 1:x9=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c4d4860> [P1: <0x0C>	lw x9_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x00>	lw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c438230>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |           P1            ;
 <0x00> ori x5, x0, 1 | <0x00> lw x5, 0(x6)     ;
@@ -6636,7 +6621,7 @@ States 4
 1:x5=0; 1:x9=1;  => 1
 1:x5=1; 1:x9=0;  => 1
 1:x5=1; 1:x9=1;  => 1
-Time MP+fence.rw.rw+ctrlfence.w.r  0.0781s
+Time MP+fence.rw.rw+ctrlfence.w.r  0.0206s
 #Executions: 18
 
 complete exe list
@@ -8398,7 +8383,7 @@ States 3
 0:x5=0; 0:x7=0;  => 1
 0:x5=0; 0:x7=1;  => 1
 0:x5=1; 0:x7=1;  => 1
-Time R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe  0.0423s
+Time R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe  0.0159s
 #Executions: 18
 
 validate litmus by cur_mm
@@ -8419,7 +8404,7 @@ States 4
 0:x5=0; 0:x7=1;  => 1
 0:x5=1; 0:x7=0;  => 1
 0:x5=1; 0:x7=1;  => 1
-Time R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe  0.0352s
+Time R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe  0.0155s
 #Executions: 18
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe.litmus
@@ -8441,8 +8426,8 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False
 candidate_add_ppo R;po;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -8467,8 +8452,8 @@ need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False ['po', 'fence_w_rw']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -8508,8 +8493,8 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False
 candidate_add_ppo R;fence_w_rw;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -8535,8 +8520,8 @@ need_check_ppo [R];fencerel(Fence.w.rw);[R] target_ppo [R];fencerel(Fence.w.rw);
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 False False ['po', 'fence_w_rw']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -8573,7 +8558,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];rfe
 path_single_ppo justify [R];fencerel(Fence.w.rw);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];rfe
 diy_cycle Fence.w.rwdRR Fre Fence.rw.rwdWW Rfe
-stengthen state, 0:x5=1; 0:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c197ac30> [P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c14f4ad0>] False
+stengthen state, 0:x5=1; 0:x7=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c496300> [P0: <0x08>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c4f60c0>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0         |         P1           ;
 <0x00> lw x5, 0(x6) | <0x00> ori x5, x0, 1 ;
@@ -8591,7 +8576,7 @@ States 4
 0:x5=0; 0:x7=1;  => 1
 0:x5=1; 0:x7=0;  => 1
 0:x5=1; 0:x7=1;  => 1
-Time R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe  0.0295s
+Time R_fencerelFence.w.rw_R_Fence_w_rwdRR_Fre_Fence_rw_rwdWW_Rfe  0.0118s
 #Executions: 9
 
 complete exe list
@@ -9696,7 +9681,7 @@ States 3
 1:x7=0; [y]=1;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.w.w+fence.tso  0.0597s
+Time R+fence.w.w+fence.tso  0.0187s
 #Executions: 24
 
 validate litmus by cur_mm
@@ -9717,7 +9702,7 @@ States 4
 1:x7=0; [y]=2;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.w.w+fence.tso  0.0397s
+Time R+fence.w.w+fence.tso  0.0159s
 #Executions: 24
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../../tests/input/litmus/non-mixed-size/HAND/R+fence.w.w+fence.tso.litmus
@@ -9739,9 +9724,9 @@ from this path get ppo
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
+rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
-rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -9766,9 +9751,9 @@ need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 add_rels_final
 add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False ['po', 'fence_tso']
 check all rels
+check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
-check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -9788,21 +9773,11 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw
 need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 insert_path [(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
+filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
 ppo [W];po;[R]
 e1 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
 e2 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
 cycle str
-P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
-cycle str after change
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
@@ -9823,9 +9798,9 @@ from this path get ppo
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False
 candidate_add_ppo W;fence_tso;R
 all_rels
+rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
-rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 rel P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -9851,9 +9826,9 @@ need_check_ppo [W];fencerel(Fence.tso);[R] target_ppo [W];fencerel(Fence.tso);[R
 add_rels_final
 add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False ['po', 'fence_tso']
 check all rels
+check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
-check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 True False ['rfe']
 check rel P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 False True ['fre']
@@ -9874,21 +9849,11 @@ need_check_ppo [W];po;[R] target_ppo [W];fencerel(Fence.tso);[R]
 need_check_ppo [W];fencerel(Fence.tso);[R] target_ppo [W];fencerel(Fence.tso);[R]
 insert_path [(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, 'fence_tso')]
 {}
-filter_cycle [[P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
+filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
 ppo [W];fencerel(Fence.tso);[R]
 e1 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
 e2 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
 cycle str
-P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
-cycle str after change
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
 P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	
@@ -9905,7 +9870,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.tso);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.tsodWR Fre Fence.rw.rwdWW Coe
-stengthen state, 1:x7=0; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0ea2390> [P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0e66750>] False
+stengthen state, 1:x7=0; [y]=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c342810> [P1: <0x0C>	lw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c31bf50>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |         P1           ;
 <0x00> ori x5, x0, 1 | <0x00> ori x5, x0, 2 ;
@@ -9923,7 +9888,7 @@ States 4
 1:x7=0; [y]=2;  => 1
 1:x7=1; [y]=1;  => 1
 1:x7=1; [y]=2;  => 1
-Time R+fence.w.w+fence.tso  0.0340s
+Time R+fence.w.w+fence.tso  0.0120s
 #Executions: 12
 
 complete exe list
@@ -11116,7 +11081,7 @@ States 3
 0:x7=0; 1:x9=1;  => 1
 0:x7=1; 1:x9=1;  => 2
 0:x7=1; 1:x9=2;  => 1
-Time W_fencerelFence.r.r_R_Fence_r_rdWR_Fre_Fence_rw_rwdWW_Coe  0.2225s
+Time W_fencerelFence.r.r_R_Fence_r_rdWR_Fre_Fence_rw_rwdWW_Coe  0.0691s
 #Executions: 96
 
 validate litmus by cur_mm
@@ -11138,7 +11103,7 @@ States 4
 0:x7=0; 1:x9=2;  => 1
 0:x7=1; 1:x9=1;  => 2
 0:x7=1; 1:x9=2;  => 1
-Time W_fencerelFence.r.r_R_Fence_r_rdWR_Fre_Fence_rw_rwdWW_Coe  0.1672s
+Time W_fencerelFence.r.r_R_Fence_r_rdWR_Fre_Fence_rw_rwdWW_Coe  0.0672s
 #Executions: 96
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/W_fencerelFence.r.r_R_Fence_r_rdWR_Fre_Fence_rw_rwdWW_Coe.litmus
@@ -11160,9 +11125,9 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -11245,9 +11210,9 @@ add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_
 add rel final P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['po', 'po_loc']
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_r_r']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -11271,21 +11236,11 @@ get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw
 need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	]]
+filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [W];po;[R]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -11301,9 +11256,9 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False
 candidate_add_ppo W;fence_r_r;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -11331,9 +11286,9 @@ need_check_ppo [W];fencerel(Fence.r.r);[R] target_ppo [W];fencerel(Fence.r.r);[R
 add_rels_final
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_r_r']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -11356,21 +11311,11 @@ need_check_ppo [W];po;[R] target_ppo [W];fencerel(Fence.r.r);[R]
 need_check_ppo [W];fencerel(Fence.r.r);[R] target_ppo [W];fencerel(Fence.r.r);[R]
 insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, 'fence_r_r')]
 {}
-filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	]]
+filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [W];fencerel(Fence.r.r);[R]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -11382,7 +11327,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.r.r);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.r.rdWR Fre Fence.rw.rwdWW Coe
-stengthen state, 0:x7=0; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0f7b1a0> [P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0f79910>] False
+stengthen state, 0:x7=0; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c380b60> [P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c43a4b0>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |         P1           ;
 <0x00> ori x5, x0, 2 | <0x00> ori x5, x0, 1 ;
@@ -11401,7 +11346,7 @@ States 4
 0:x7=0; 1:x9=2;  => 1
 0:x7=1; 1:x9=1;  => 2
 0:x7=1; 1:x9=2;  => 1
-Time W_fencerelFence.r.r_R_Fence_r_rdWR_Fre_Fence_rw_rwdWW_Coe  0.0931s
+Time W_fencerelFence.r.r_R_Fence_r_rdWR_Fre_Fence_rw_rwdWW_Coe  0.0269s
 #Executions: 32
 
 complete exe list
@@ -11855,7 +11800,7 @@ States 3
 0:x7=0; 1:x9=1;  => 1
 0:x7=1; 1:x9=1;  => 2
 0:x7=1; 1:x9=2;  => 1
-Time W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe  0.2247s
+Time W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe  0.0766s
 #Executions: 96
 
 validate litmus by cur_mm
@@ -11877,7 +11822,7 @@ States 4
 0:x7=0; 1:x9=2;  => 1
 0:x7=1; 1:x9=1;  => 2
 0:x7=1; 1:x9=2;  => 1
-Time W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe  0.1694s
+Time W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe  0.0672s
 #Executions: 96
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe.litmus
@@ -11899,9 +11844,9 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -11984,9 +11929,9 @@ add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_
 add rel final P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['po', 'po_loc']
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_r_w']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -12010,21 +11955,11 @@ get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw
 need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	]]
+filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [W];po;[R]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -12040,9 +11975,9 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False
 candidate_add_ppo W;fence_r_w;R
 all_rels
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -12070,9 +12005,9 @@ need_check_ppo [W];fencerel(Fence.r.w);[R] target_ppo [W];fencerel(Fence.r.w);[R
 add_rels_final
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_r_w']
 check all rels
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel --: None P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	 True False ['rfe']
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 True False ['rfe']
@@ -12095,21 +12030,11 @@ need_check_ppo [W];po;[R] target_ppo [W];fencerel(Fence.r.w);[R]
 need_check_ppo [W];fencerel(Fence.r.w);[R] target_ppo [W];fencerel(Fence.r.w);[R]
 insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, 'fence_r_w')]
 {}
-filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	]]
+filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [W];fencerel(Fence.r.w);[R]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -12121,7 +12046,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.r.w);[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.r.wdWR Fre Fence.rw.rwdWW Coe
-stengthen state, 0:x7=0; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0d49d90> [P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0d029f0>] False
+stengthen state, 0:x7=0; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c382090> [P0: <0x0C>	lw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c47a360>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |         P1           ;
 <0x00> ori x5, x0, 2 | <0x00> ori x5, x0, 1 ;
@@ -12140,7 +12065,7 @@ States 4
 0:x7=0; 1:x9=2;  => 1
 0:x7=1; 1:x9=1;  => 2
 0:x7=1; 1:x9=2;  => 1
-Time W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe  0.0935s
+Time W_fencerelFence.r.w_R_Fence_r_wdWR_Fre_Fence_rw_rwdWW_Coe  0.0272s
 #Executions: 32
 
 complete exe list
@@ -13163,7 +13088,7 @@ States 3
 0:x5=0; 0:x11=0;  => 1
 0:x5=0; 0:x11=1;  => 1
 0:x5=1; 0:x11=1;  => 1
-Time R_addr_W_po_R_DpAddrdW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.3238s
+Time R_addr_W_po_R_DpAddrdW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.1683s
 #Executions: 96
 
 validate litmus by cur_mm
@@ -13185,7 +13110,7 @@ States 4
 0:x5=0; 0:x11=1;  => 1
 0:x5=1; 0:x11=0;  => 1
 0:x5=1; 0:x11=1;  => 1
-Time R_addr_W_po_R_DpAddrdW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.2868s
+Time R_addr_W_po_R_DpAddrdW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.1612s
 #Executions: 96
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/R_addr_W_po_R_DpAddrdW_PodWR_Fre_Fence_rw_rwdWW_Rfe.litmus
@@ -13216,9 +13141,9 @@ P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 False Tru
 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False
 candidate_add_ppo R;addr;W;po;R
 all_rels
-rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13251,9 +13176,9 @@ need_check_ppo [R];addr;[W];po;[R] target_ppo [R];addr;[W];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 False False ['po']
 check all rels
-check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13281,11 +13206,17 @@ get_all_paths_from_e1_to_e2 [[(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw
 need_check_ppo [R];addr;[W];po;[R] target_ppo [R];addr;[W];po;[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, 'addr'), (P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
+filter_cycle [[P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
 ppo [R];addr;[W];po;[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
 cycle str
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
+P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+cycle str after change
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
@@ -13303,9 +13234,9 @@ P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 False Tru
 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False
 candidate_add_ppo R;po;W;po;R
 all_rels
-rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13339,9 +13270,9 @@ need_check_ppo [R];po;[W];po;[R] target_ppo [R];po;[W];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 False False ['po']
 check all rels
-check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13370,11 +13301,17 @@ need_check_ppo [R];addr;[W];po;[R] target_ppo [R];po;[W];po;[R]
 need_check_ppo [R];po;[W];po;[R] target_ppo [R];po;[W];po;[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, 'po'), (P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
+filter_cycle [[P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
 ppo [R];po;[W];po;[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
 cycle str
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
+P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+cycle str after change
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
@@ -13391,9 +13328,9 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 False False
 candidate_add_ppo R;po;R
 all_rels
-rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13428,9 +13365,9 @@ need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 False False ['po']
 check all rels
-check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13460,11 +13397,16 @@ need_check_ppo [R];po;[W];po;[R] target_ppo [R];po;[R]
 need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
+filter_cycle [[P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
 ppo [R];po;[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
 cycle str
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+cycle str after change
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -13490,9 +13432,9 @@ from this path get ppo
 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
-rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13516,9 +13458,9 @@ need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 add_rels_final
 add rel final P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['po']
 check all rels
-check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	 True True ['coe']
 check rel --: None P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -13537,11 +13479,29 @@ get_all_paths_from_e1_to_e2 [[(P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	l
 need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 insert_path [(P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	, P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
+filter_cycle [[P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	]]
 ppo [W];po;[R]
 e1 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
 e2 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
 cycle str
+P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
+cycle str after change
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
+P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
+cycle str after change
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
+P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+cycle str after change
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	
 P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	
@@ -13560,7 +13520,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];rfe;[R];addr
 path_single_ppo justify [W];po;[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];rfe;[R];addr
 diy_cycle DpAddrdW PodWR Fre Fence.rw.rwdWW Rfe
-stengthen state, 0:x5=1; 0:x11=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0d89ac0> [P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0d5a3c0>, <src.slide.synth.constraint.Constraint object at 0x7586c0d03b90>] False
+stengthen state, 0:x5=1; 0:x11=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c383170> [P0: <0x14>	lw x11_p0_1, 0(x12_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x8_p0_1, 0(x10_p0_1)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c993e60>, <src.slide.synth.constraint.Constraint object at 0x737f9c4154c0>] False
 {0:x6=x; 0:x9=y; 0:x12=z; 1:x6=z; 1:x8=x}
           P0           |         P1           ;
 <0x00> lw x5, 0(x6)    | <0x00> ori x5, x0, 1 ;
@@ -13579,7 +13539,7 @@ States 4
 0:x5=0; 0:x11=1;  => 1
 0:x5=1; 0:x11=0;  => 1
 0:x5=1; 0:x11=1;  => 1
-Time R_addr_W_po_R_DpAddrdW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.1133s
+Time R_addr_W_po_R_DpAddrdW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.0564s
 #Executions: 24
 
 complete exe list
@@ -14296,7 +14256,7 @@ States 3
 0:x5=0; 0:x9=0;  => 1
 0:x5=0; 0:x9=1;  => 1
 0:x5=1; 0:x9=1;  => 1
-Time R_data_W_po_R_DpDatadW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.2951s
+Time R_data_W_po_R_DpDatadW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.1539s
 #Executions: 96
 
 validate litmus by cur_mm
@@ -14317,7 +14277,7 @@ States 4
 0:x5=0; 0:x9=1;  => 1
 0:x5=1; 0:x9=0;  => 1
 0:x5=1; 0:x9=1;  => 1
-Time R_data_W_po_R_DpDatadW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.2697s
+Time R_data_W_po_R_DpDatadW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.1489s
 #Executions: 96
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/R_data_W_po_R_DpDatadW_PodWR_Fre_Fence_rw_rwdWW_Rfe.litmus
@@ -14348,9 +14308,9 @@ P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 False True
 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False
 candidate_add_ppo R;data;W;po;R
 all_rels
-rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14383,9 +14343,9 @@ need_check_ppo [R];data;[W];po;[R] target_ppo [R];data;[W];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 False False ['po']
 check all rels
-check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14413,23 +14373,11 @@ get_all_paths_from_e1_to_e2 [[(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw
 need_check_ppo [R];data;[W];po;[R] target_ppo [R];data;[W];po;[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, 'data'), (P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	]]
+filter_cycle [[P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [R];data;[W];po;[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
 cycle str
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
-P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
-P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
@@ -14447,9 +14395,9 @@ P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 False True
 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False
 candidate_add_ppo R;po;W;po;R
 all_rels
-rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14483,9 +14431,9 @@ need_check_ppo [R];po;[W];po;[R] target_ppo [R];po;[W];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 False False ['po']
 check all rels
-check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14514,23 +14462,11 @@ need_check_ppo [R];data;[W];po;[R] target_ppo [R];po;[W];po;[R]
 need_check_ppo [R];po;[W];po;[R] target_ppo [R];po;[W];po;[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, 'po'), (P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	]]
+filter_cycle [[P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [R];po;[W];po;[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
 cycle str
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
-P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
-P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
@@ -14547,9 +14483,9 @@ from this path get ppo
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 False False
 candidate_add_ppo R;po;R
 all_rels
-rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14584,9 +14520,9 @@ need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 add_rels_final
 add rel final P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 False False ['po']
 check all rels
-check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14616,21 +14552,11 @@ need_check_ppo [R];po;[W];po;[R] target_ppo [R];po;[R]
 need_check_ppo [R];po;[R] target_ppo [R];po;[R]
 insert_path [(P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, 'po')]
 {}
-filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	]]
+filter_cycle [[P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [R];po;[R]
 e1 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
 cycle str
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -14656,9 +14582,9 @@ from this path get ppo
 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False
 candidate_add_ppo W;po;R
 all_rels
-rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14682,9 +14608,9 @@ need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 add_rels_final
 add rel final P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['po']
 check all rels
-check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
+check rel --: None P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	 True True ['coe']
 check rel --: None P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 True False ['rfe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	 True False ['rfe']
 check rel P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 False True ['fre']
@@ -14703,11 +14629,23 @@ get_all_paths_from_e1_to_e2 [[(P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw
 need_check_ppo [W];po;[R] target_ppo [W];po;[R]
 insert_path [(P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	]]
+filter_cycle [[P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	, P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
 ppo [W];po;[R]
 e1 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
 e2 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
 cycle str
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
+P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+cycle str after change
+P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	
+P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
+P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+cycle str after change
 P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	
 P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -14720,7 +14658,7 @@ other_single_ppo fre;[W];fencerel(Fence.rw.rw);[W];rfe;[R];data
 path_single_ppo justify [W];po;[R]
 other_single_ppo justify fre;[W];fencerel(Fence.rw.rw);[W];rfe;[R];data
 diy_cycle DpDatadW PodWR Fre Fence.rw.rwdWW Rfe
-stengthen state, 0:x5=1; 0:x9=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0d03b30> [P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0e0ff50>, <src.slide.synth.constraint.Constraint object at 0x7586c0d02e10>] False
+stengthen state, 0:x5=1; 0:x9=0;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9c3f13a0> [P0: <0x10>	lw x9_p0_1, 0(x10_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x00>	lw x5_p0_1, 0(x6_p0_0)	, P0: <0x0C>	sw x7_p0_2, 0(x8_p0_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c497f50>, <src.slide.synth.constraint.Constraint object at 0x737f9c3cb2c0>] False
 {0:x6=x; 0:x8=y; 0:x10=z; 1:x6=z; 1:x8=x}
           P0          |         P1           ;
 <0x00> lw x5, 0(x6)   | <0x00> ori x5, x0, 1 ;
@@ -14738,7 +14676,7 @@ States 4
 0:x5=0; 0:x9=1;  => 1
 0:x5=1; 0:x9=0;  => 1
 0:x5=1; 0:x9=1;  => 1
-Time R_data_W_po_R_DpDatadW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.1082s
+Time R_data_W_po_R_DpDatadW_PodWR_Fre_Fence_rw_rwdWW_Rfe  0.0507s
 #Executions: 24
 
 complete exe list
@@ -15454,13 +15392,13 @@ validate litmus by tgt_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.7sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.2sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 3
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 1
-Time W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe  1.3435s
+Time W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe  0.3571s
 #Executions: 600
 
 validate litmus by cur_mm
@@ -15475,14 +15413,14 @@ validate litmus by cur_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.7sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.1sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 4
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe  1.2404s
+Time W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe  0.3541s
 #Executions: 600
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe.litmus
@@ -15504,10 +15442,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;po;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -15551,10 +15489,10 @@ add_rels_final
 add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_w_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -15564,19 +15502,6 @@ check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['fence', 'po', 'fence_w_r']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_w_r']
-need insert
-enter get_path_from_e1_to_e2_by_ppo
-events sequence
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, is write event:True
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, is write event:True
-ei,ej,relations, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	(W), P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	(W), ['po', 'fence_w_r']
-this path is True
-(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')
-this path is True
-(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_w_r')
-get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')], [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_w_r')]]
-need_check_ppo [W];po;[W] target_ppo [W];po;[W]
-insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')]
 need insert
 enter get_path_from_e1_to_e2_by_ppo
 events sequence
@@ -15593,12 +15518,35 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw
 need_check_ppo [W];fencerel(Fence.rw.rw);[W] target_ppo [W];po;[W]
 need_check_ppo [W];po;[W] target_ppo [W];po;[W]
 insert_path [(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, 'po')]
+need insert
+enter get_path_from_e1_to_e2_by_ppo
+events sequence
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, is write event:True
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, is write event:True
+ei,ej,relations, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	(W), P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	(W), ['po', 'fence_w_r']
+this path is True
+(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')
+this path is True
+(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_w_r')
+get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')], [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_w_r')]]
+need_check_ppo [W];po;[W] target_ppo [W];po;[W]
+insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
+filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	]]
 ppo [W];po;[W]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 cycle str
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
+cycle str after change
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -15614,10 +15562,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;fence_w_r;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -15646,10 +15594,10 @@ need_check_ppo [W];fencerel(Fence.w.r);[W] target_ppo [W];fencerel(Fence.w.r);[W
 add_rels_final
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_w_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -15673,11 +15621,21 @@ need_check_ppo [W];po;[W] target_ppo [W];fencerel(Fence.w.r);[W]
 need_check_ppo [W];fencerel(Fence.w.r);[W] target_ppo [W];fencerel(Fence.w.r);[W]
 insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_w_r')]
 {}
-filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
+filter_cycle [[P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	]]
 ppo [W];fencerel(Fence.w.r);[W]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 cycle str
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
+cycle str after change
+P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
+P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
+cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -15689,7 +15647,7 @@ other_single_ppo coe;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.w.r);[W]
 other_single_ppo justify coe;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.w.rdWW Coe Fence.rw.rwdWW Coe
-stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0d8a300> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0e64d40>] False
+stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9bf50170> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c31a750>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |         P1           ;
 <0x00> ori x5, x0, 2 | <0x00> ori x5, x0, 2 ;
@@ -15708,7 +15666,7 @@ States 4
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe  0.4181s
+Time W_fencerelFence.w.r_W_Fence_w_rdWW_Coe_Fence_rw_rwdWW_Coe  0.0570s
 #Executions: 95
 
 complete exe list
@@ -16484,13 +16442,13 @@ validate litmus by tgt_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.7sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.1sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 3
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 1
-Time W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe  1.3112s
+Time W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe  0.3602s
 #Executions: 600
 
 validate litmus by cur_mm
@@ -16505,14 +16463,14 @@ validate litmus by cur_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.7sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.1sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 4
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe  1.2207s
+Time W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe  0.3525s
 #Executions: 600
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe.litmus
@@ -16534,10 +16492,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;po;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -16581,10 +16539,10 @@ add_rels_final
 add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_r_w']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -16594,6 +16552,19 @@ check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_r_w']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_r_w']
+need insert
+enter get_path_from_e1_to_e2_by_ppo
+events sequence
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, is write event:True
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, is write event:True
+ei,ej,relations, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	(W), P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	(W), ['po', 'fence_r_w']
+this path is True
+(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')
+this path is True
+(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_w')
+get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')], [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_w')]]
+need_check_ppo [W];po;[W] target_ppo [W];po;[W]
+insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')]
 need insert
 enter get_path_from_e1_to_e2_by_ppo
 events sequence
@@ -16610,40 +16581,12 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw
 need_check_ppo [W];fencerel(Fence.rw.rw);[W] target_ppo [W];po;[W]
 need_check_ppo [W];po;[W] target_ppo [W];po;[W]
 insert_path [(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, 'po')]
-need insert
-enter get_path_from_e1_to_e2_by_ppo
-events sequence
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, is write event:True
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, is write event:True
-ei,ej,relations, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	(W), P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	(W), ['po', 'fence_r_w']
-this path is True
-(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')
-this path is True
-(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_w')
-get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')], [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_w')]]
-need_check_ppo [W];po;[W] target_ppo [W];po;[W]
-insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
+filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [W];po;[W]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-cycle str after change
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -16659,10 +16602,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;fence_r_w;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -16691,10 +16634,10 @@ need_check_ppo [W];fencerel(Fence.r.w);[W] target_ppo [W];fencerel(Fence.r.w);[W
 add_rels_final
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_r_w']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -16718,26 +16661,11 @@ need_check_ppo [W];po;[W] target_ppo [W];fencerel(Fence.r.w);[W]
 need_check_ppo [W];fencerel(Fence.r.w);[W] target_ppo [W];fencerel(Fence.r.w);[W]
 insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_w')]
 {}
-filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
+filter_cycle [[P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	]]
 ppo [W];fencerel(Fence.r.w);[W]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-cycle str after change
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-cycle str after change
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
@@ -16749,7 +16677,7 @@ other_single_ppo coe;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.r.w);[W]
 other_single_ppo justify coe;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.r.wdWW Coe Fence.rw.rwdWW Coe
-stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0dea5d0> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0e0d4f0>] False
+stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9bf862a0> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c496330>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |         P1           ;
 <0x00> ori x5, x0, 2 | <0x00> ori x5, x0, 2 ;
@@ -16761,14 +16689,14 @@ stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |█████████████████████████-------------------------| 50.0% 100/200 | Elapsed Time:  0.5sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |█████████████████████████-------------------------| 50.0% 100/200 | Elapsed Time:  0.1sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 4
 0:x9=1; 1:x9=1;  => 4
 0:x9=1; 1:x9=2;  => 2
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe  0.5151s
+Time W_fencerelFence.r.w_W_Fence_r_wdWW_Coe_Fence_rw_rwdWW_Coe  0.1060s
 #Executions: 200
 
 complete exe list
@@ -18741,13 +18669,13 @@ validate litmus by tgt_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.7sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.2sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 3
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 1
-Time W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe  1.3354s
+Time W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe  0.3758s
 #Executions: 600
 
 validate litmus by cur_mm
@@ -18762,14 +18690,14 @@ validate litmus by cur_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.8sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.1sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 4
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe  1.2886s
+Time W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe  0.3645s
 #Executions: 600
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe.litmus
@@ -18791,10 +18719,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;po;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -18838,10 +18766,10 @@ add_rels_final
 add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_r_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -18851,6 +18779,19 @@ check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	 
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['po', 'fence_r_r']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 check rel P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_r_r']
+need insert
+enter get_path_from_e1_to_e2_by_ppo
+events sequence
+P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, is write event:True
+P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, is write event:True
+ei,ej,relations, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	(W), P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	(W), ['po', 'fence_r_r']
+this path is True
+(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')
+this path is True
+(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_r')
+get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')], [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_r')]]
+need_check_ppo [W];po;[W] target_ppo [W];po;[W]
+insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')]
 need insert
 enter get_path_from_e1_to_e2_by_ppo
 events sequence
@@ -18867,35 +18808,12 @@ get_all_paths_from_e1_to_e2 [[(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw
 need_check_ppo [W];fencerel(Fence.rw.rw);[W] target_ppo [W];po;[W]
 need_check_ppo [W];po;[W] target_ppo [W];po;[W]
 insert_path [(P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, 'po')]
-need insert
-enter get_path_from_e1_to_e2_by_ppo
-events sequence
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, is write event:True
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, is write event:True
-ei,ej,relations, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	(W), P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	(W), ['po', 'fence_r_r']
-this path is True
-(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')
-this path is True
-(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_r')
-get_all_paths_from_e1_to_e2 [[(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')], [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_r')]]
-need_check_ppo [W];po;[W] target_ppo [W];po;[W]
-insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'po')]
 {}
-filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
+filter_cycle [[P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
 ppo [W];po;[W]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-cycle str after change
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
@@ -18916,10 +18834,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;fence_r_r;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -18948,10 +18866,10 @@ need_check_ppo [W];fencerel(Fence.r.r);[W] target_ppo [W];fencerel(Fence.r.r);[W
 add_rels_final
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_r_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -18975,21 +18893,11 @@ need_check_ppo [W];po;[W] target_ppo [W];fencerel(Fence.r.r);[W]
 need_check_ppo [W];fencerel(Fence.r.r);[W] target_ppo [W];fencerel(Fence.r.r);[W]
 insert_path [(P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, 'fence_r_r')]
 {}
-filter_cycle [[P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	]]
+filter_cycle [[P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	]]
 ppo [W];fencerel(Fence.r.r);[W]
 e1 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 e2 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
 cycle str
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-cycle str after change
-P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	
-P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
-P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
-P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
-cycle str after change
 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	
 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	
@@ -19006,7 +18914,7 @@ other_single_ppo coe;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.r.r);[W]
 other_single_ppo justify coe;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.r.rdWW Coe Fence.rw.rwdWW Coe
-stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0d4b2f0> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0e4f500>] False
+stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9bfd4a10> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9c319040>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |         P1           ;
 <0x00> ori x5, x0, 2 | <0x00> ori x5, x0, 2 ;
@@ -19018,14 +18926,14 @@ stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |█████████████████████████-------------------------| 50.0% 100/200 | Elapsed Time:  0.5sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |█████████████████████████-------------------------| 50.0% 100/200 | Elapsed Time:  0.1sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 4
 0:x9=1; 1:x9=1;  => 4
 0:x9=1; 1:x9=2;  => 2
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe  0.5410s
+Time W_fencerelFence.r.r_W_Fence_r_rdWW_Coe_Fence_rw_rwdWW_Coe  0.1109s
 #Executions: 200
 
 complete exe list
@@ -19527,13 +19435,13 @@ validate litmus by tgt_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.7sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.2sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 3
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 1
-Time W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe  1.3376s
+Time W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe  0.3658s
 #Executions: 600
 
 validate litmus by cur_mm
@@ -19548,14 +19456,14 @@ validate litmus by cur_mm
 
 QType.Exists (0:x9==2/\1:x9==2)
 
-Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.7sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.7sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.9sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  1.0sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  1.1sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
+Progress [1/1]: |████████------------------------------------------| 16.7% 100/600 | Elapsed Time:  0.1sProgress [1/1]: |████████████████----------------------------------| 33.3% 200/600 | Elapsed Time:  0.1sProgress [1/1]: |█████████████████████████-------------------------| 50.0% 300/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████-----------------| 66.7% 400/600 | Elapsed Time:  0.2sProgress [1/1]: |█████████████████████████████████████████---------| 83.3% 500/600 | Elapsed Time:  0.3sProgress [1/1]: |██████████████████████████████████████████████████| 100.0%
 
 States 4
 0:x9=1; 1:x9=1;  => 3
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe  1.2280s
+Time W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe  0.3669s
 #Executions: 600
 
 failed file: /home/whq/Desktop/code_list/slide/src/slide/../output/complete_litmus_rvwmo/W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe.litmus
@@ -19577,10 +19485,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;po;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -19624,10 +19532,10 @@ add_rels_final
 add rel final P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['fence', 'po', 'fence_rw_rw']
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_rw_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -19687,10 +19595,10 @@ from this path get ppo
 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True
 candidate_add_ppo W;fence_rw_r;W
 all_rels
-rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -19719,10 +19627,10 @@ need_check_ppo [W];fencerel(Fence.rw.r);[W] target_ppo [W];fencerel(Fence.rw.r);
 add_rels_final
 add rel final P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['po', 'fence_rw_r']
 check all rels
-check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
-check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel --: None P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 True True ['coe']
 check rel --: None P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
+check rel --: None P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 True True ['coe']
+check rel --: None P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	 P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 True True ['coe']
 check rel P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	 P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	 True True ['coe']
 check rel P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	 P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	 True False ['rfe']
@@ -19762,7 +19670,7 @@ other_single_ppo coe;[W];fencerel(Fence.rw.rw);[W];coe
 path_single_ppo justify [W];fencerel(Fence.rw.r);[W]
 other_single_ppo justify coe;[W];fencerel(Fence.rw.rw);[W];coe
 diy_cycle Fence.rw.rdWW Coe Fence.rw.rwdWW Coe
-stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x7586c0d9ee70> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x7586c0d484d0>] False
+stengthen state, 0:x9=2; 1:x9=2;  <src.slide.analysis.rel.GlobalRelationAnalyzer object at 0x737f9bf6a4b0> [P0: <0x10>	sw x7_p0_1, 0(x8_p0_0)	, P1: <0x04>	sw x5_p1_1, 0(x6_p1_0)	, P1: <0x10>	sw x7_p1_1, 0(x8_p1_0)	, P0: <0x04>	sw x5_p0_1, 0(x6_p0_0)	, P0: <0x14>	lw x9_p0_1, 0(x8_p0_0)	, P1: <0x14>	lw x9_p1_1, 0(x8_p1_0)	] [<src.slide.synth.constraint.Constraint object at 0x737f9de783e0>] False
 {0:x6=x; 0:x8=y; 1:x6=y; 1:x8=x}
          P0          |         P1           ;
 <0x00> ori x5, x0, 2 | <0x00> ori x5, x0, 2 ;
@@ -19781,7 +19689,7 @@ States 4
 0:x9=1; 1:x9=2;  => 1
 0:x9=2; 1:x9=1;  => 2
 0:x9=2; 1:x9=2;  => 1
-Time W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe  0.4403s
+Time W_fencerelFence.rw.r_W_Fence_rw_rdWW_Coe_Fence_rw_rwdWW_Coe  0.0553s
 #Executions: 95
 
 complete exe list

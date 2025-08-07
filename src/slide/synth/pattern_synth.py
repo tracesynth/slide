@@ -553,15 +553,15 @@ def create_new_tests(test_dir, before_cat_fragment, after_cat_fragment, ppo: Sin
     litmus_suite, litmus_content_suite = create_new_tests_by_generator(test_dir, before_cat_fragment,
                                                                        after_cat_fragment, ppo, cnt, litmus_index)
     print('litmus suite', litmus_suite)
-    for litmus_name, litmus_content in litmus_content_suite:
-        with open(cache_file, 'a') as cache_f:
-            cache_f.write('new litmus test\n')
-            cache_f.write(str(ppo))
-            cache_f.write('\n')
-            cache_f.write(litmus_name)
-            cache_f.write('\n')
-            cache_f.write(litmus_content)
-            cache_f.write('\n')
+    # for litmus_name, litmus_content in litmus_content_suite:
+    #     with open(cache_file, 'a') as cache_f:
+    #         cache_f.write('new litmus test\n')
+    #         cache_f.write(str(ppo))
+    #         cache_f.write('\n')
+    #         cache_f.write(litmus_name)
+    #         cache_f.write('\n')
+    #         cache_f.write(litmus_content)
+    #         cache_f.write('\n')
     return litmus_suite # can be []
 
 
