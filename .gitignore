@@ -9,3 +9,4 @@ dev.env
 *.html
 environment.yml
 /tests/log.txt
+tracesynth.tar

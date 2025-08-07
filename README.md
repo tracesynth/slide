@@ -35,7 +35,7 @@ We recommend executing the experiments on a recent Ubuntu distribution, equipped
 - **License**: MIT License.
 
 - **Archived**: Yes. The artifact is archived and permanently available via the following:
-        https://github.com/tracesynth/slide.git
+        https://doi.org/10.5281/zenodo.16758525
 
 
 ## Description
@@ -61,7 +61,7 @@ To set up the environment, run the following command:
 
 
 ```
-docker load tracesynth tracesynth.tar
+docker load -i tracesynth.tar
 docker run -it tracesynth /bin/bash
 ```
 
