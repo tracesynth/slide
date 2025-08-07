@@ -86,7 +86,7 @@ conda activate slide
 
 
 
-The experiments can be run using provided scripts. To reproduce all experiments related to \ToolName{}, execute:
+The experiments can be run using provided scripts. To reproduce all experiments related to TraceSynth, execute:
 
 ```
 cd /home/synth/slide/tests/experiment  
@@ -100,7 +100,7 @@ We also provide a script for Experiment 1 on C910 hardware, which can be execute
 ```
 
 
-For experiments related to \textsc{MemSynth}, execute the following commands:
+For experiments related to MemSynth, execute the following commands:
 
 ```
 cd /home/synth/memsynth  
@@ -121,7 +121,7 @@ For TraceSynth, all experimental results are stored in:
 
 
 
-For \textsc{MemSynth}, all experimental results are stored in:
+For MemSynth, all experimental results are stored in:
 
 
 ```
