@@ -27,7 +27,7 @@ exp_5_output_log_dir = os.path.join(config.TEST_DIR,'results/exp5_result')
 dif_log_dir = os.path.join(config.HERD_LOG_DIR_PATH, f'variant/dif')
 def pre():
     assert len(os.listdir(exp_5_output_log_dir)) != 0, "must pass exp5 synth rvwmo variant post"
-exp5_png_path = os.path.join(config.TEST_DIR, 'results/exp5_result_SC_TSO.png')
+exp5_png_path = os.path.join(config.TEST_DIR, 'results/exp5_result.png')
 
 
 new_model = {}
@@ -148,65 +148,7 @@ def draw_img():
     # plt.savefig("variant_summary_table.png", bbox_inches='tight')
     # print("表格图片已保存为 variant_summary_table.png")
 
-def draw_img_SC():
-    # 示例数据（5行模型组合）
-
-    data = [['SC',SC_model[5],SC_model[6]],['TSO',TSO_model[5], TSO_model[6]]]
-
-    columns = ['variant', 'Synth PPO Nums', 'Time']
-
-    # 构造 DataFrame
-    df = pd.DataFrame(data, columns=columns)
-
-    rows = 3  # 你实际的数据行数
-    cols = 3  #
-
-    fig_height = max(5, rows * 0.3)  # 你可以调节 0.3 这个因子
-    fig_width = max(8, cols * 1.3)
-
-    # 绘图
-    fig, ax = plt.subplots(figsize=(fig_width, fig_height))
-    ax.axis('off')  # 隐藏坐标轴
-
-    # 创建表格
-    table = ax.table(cellText=df.values,
-                     colLabels=df.columns,
-                     loc='center',
-                     cellLoc='center',
-                     colLoc='center')
-
-    for key, cell in table.get_celld().items():
-        row, col = key
-        cell.set_linewidth(1)
-        # 表头行（row == 0），去掉横线
-        if row == 0:
-            cell.visible_edges = 'open'
-            cell.set_text_props(weight='bold')  # 加粗表头
-
-        # 最后一行，去掉横线
-        elif row == rows:
-            cell.visible_edges = 'open'
-
-        # 中间行，只保留上下横线
-        else:
-            cell.visible_edges = 'TB'
-    # 设置字体大小和表格缩放
-    table.auto_set_font_size(False)
-    table.set_fontsize(10)
-    table.scale(1.2, 1.5)
-
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
-
-    plt.tight_layout()
-    # 保存为图片
-    plt.savefig(exp5_png_path, bbox_inches='tight', dpi=300)
-    # plt.savefig("variant_summary_table.png", bbox_inches='tight')
-    # print("表格图片已保存为 variant_summary_table.png")
-
-
 if __name__ == '__main__':
     pre()
     get_model_data()
     draw_img()
-    # draw_img_SC()
