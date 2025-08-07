@@ -31,9 +31,14 @@ RUN sudo apt-get update && sudo apt-get install -y \
   m4 bubblewrap aspcud rsync curl git
 
 # clone
-RUN git clone https://github.com/herd/herdtools7.git && \
+RUN git config --global http.version HTTP/1.1 && \
+    git clone https://github.com/herd/herdtools7.git && \
     cd herdtools7 && \
     git checkout 7.56
+
+#RUN git clone https://github.com/herd/herdtools7.git && \
+#    cd herdtools7 && \
+#    git checkout 7.56
 
 RUN opam pin add herdtools7 7.56 --yes && \
     opam install herdtools7 --yes
@@ -56,7 +61,7 @@ RUN  conda config --set show_channel_urls yes && \
  conda clean -i -y  && conda info && conda create -n slide python=3.12.9 -y
 
 
-RUN git clone https://github.com/tracesynth/riscv_memsynth.git
+RUN git clone https://github.com/tracesynth/slide.git
 
 RUN sudo apt install -y graphviz-dev && cd slide && git checkout main
 
@@ -100,10 +105,17 @@ RUN apt-get update && \
 
 
 RUN curl -L https://mirror.racket-lang.org/installers/8.2/racket-8.2-x86_64-linux.sh -o racket.sh
+
 RUN chmod +x racket.sh && \
     ./racket.sh --in-place --dest /usr/racket && \
     ln -s /usr/racket/bin/* /usr/local/bin/ && \
     rm racket.sh
+
+#RUN wget https://mirror.racket-lang.org/installers/8.2/racket-8.2-x86_64-linux.tar.gz&& \
+#    tar -xzf racket-8.2-x86_64-linux.tar.gz&& \
+#    cd racket-8.2-x86_64-linux&& \
+#    sudo ./install.sh
+
 
 
 ENV PATH="/usr/racket/bin:$PATH"

@@ -1,79 +1,131 @@
-# A.Artifact Appendix
+# Artifact Appendix
 
-## A.1 Abstract
-This artifact contains the Python implementation of TraceSynth as well as all scripts and files necessary for reproducing the experiments described in the paper.
-It also provides automation scripts to facilitate experimental reproduction.
+## Abstract
 
-## A.2 Artifact Checklist
+This artifact encompasses the complete implementation of TraceSynth, comprising the following core components:
+(1) A delay injection algorithm designed to trigger specific final states in litmus tests;
+(2) A memory model synthesis algorithm based on execution traces, coupled with a mechanism for directed test generation.
+Additionally, the artifact incorporates a partial RISC-V implementation of MemSynth, serving as a baseline to evaluate the capabilities of existing synthesis tools on this task.
 
-- Programs: TraceSynth, MemSynth
-- Operating System: Linux (e.g., Ubuntu 22.04), Docker
-- Hardware Requirements: At least 16GB of RAM, C910 development board
-- Experiments: Includes a litmus test suite and C910 execution logs for experimental replay
+To ensure reproducibility, we provide a fully containerized environment alongside all raw data and scripts necessary to regenerate the experimental results presented in the paper. Specifically, the artifact includes convenience scripts for reproducing the following experiments:
+(1) Evaluation of TraceSynth using execution traces generated from both the [herd] memory model simulator and the [C910] processor;
+(2) Evaluation of the delay injection algorithm on the [C910] hardware;
+(3) A case study demonstrating MemSynth's synthesis capabilities for the RISC-V architecture.
+
+We recommend executing the experiments on a recent Ubuntu distribution, equipped with Docker, Python 3, and bash. All experiments can be completed within one day on a typical workstation.
 
 
-## A.3 Description
+## Artifact Checklist
 
-### A.3.1 Hardware Dependencies
-All experiments can be reproduced on any PC equipped with at least 16GB of RAM.
-While some experiments involve data obtained from a C910 development board, we provide pre-collected execution logs that allow reproduction without access to the board. Additionally, for selected experiments, we offer optional support for execution on a real C910 device.
+- **Programs:** TraceSynth, MemSynth
+- **Run-time environment:** Linux (e.g., Ubuntu 22.04), Docker
+- **Hardware Requirements:** At least 16GB of RAM, C910 development board (Optional)
+- **Experiments:** Includes a litmus test suite and C910 execution logs for experimental replay
 
-### A.3.2 Software Dependencies
+- **Output Artifacts:** The artifact generates textual output (.txt and .log files) and graphical figures.
+
+- **Experiment Workflow:** All experiments are orchestrated using a combination of Bash and Python scripts.
+
+- **Disk Space Requirements:** The Docker image requires approximately 6 GB of disk space.
+
+- **Execution Time (Approximate):** about 10 hours
+
+- **Public Availability:** Yes.
+
+- **License**: MIT License.
+
+- **Archived**: Yes. The artifact is archived and permanently available via the following:
+        https://github.com/tracesynth/slide.git
+
+
+## Description
+
+### How to access
+
+Via the github link or doi.
+
+### Hardware Dependencies
+
+Although some experiments utilize data originally obtained from a C910 development board, we provide comprehensive pre-collected execution logs, enabling full reproduction without requiring access to the physical hardware. Additionally, for partial experiments requiring execution on real hardware, we offer optional support for running on a C910 device.
+
+
+### Software Dependencies
+
 - A Linux distribution (e.g., Ubuntu 22.04)
 - Docker
 
-### A.3.3 Installation
+
+### Installation
+
 To set up the environment, run the following command:
 
+
 ```
-docker container run -it \ --runtime=nvidia --gpus all sa:v1 bash
+docker load tracesynth tracesynth.tar
+docker run -it tracesynth /bin/bash
+```
+
+Alternatively, the image can be built from a Dockerfile:
+
+```
+cd docker 
+docker build -t tracesynth .
 ```
 
 
-### A.3.4 Dataset
 
-The litmus test suite is located at:`TraceSynth/tests/input/litmus/litmus/non-mixed-size`目录中。
-The execution log for Experiments 3 and 4 on the C910 is located at:`TraceSynth/tests/input/chip_execution_logs/C910/chip_log.txt`中。
-The execution logs for Experiment 1 on the C910 are located at:`TraceSynth/tests/experiment/results/exp1_log`目录中。
+### Experimental Procedure
 
+After installation, the following commands should be executed to initialize the experimental environment:
 
-## A.4 Experimental Procedure
-To reproduce all experiments (based on the pre-collected C910 logs), navigate to:
 ```
-TraceSynth/tests/experiment
-```
-Then run:
-```
-./run.sh
-```
-The results will be saved in:
-```
-TraceSynth/tests/results`
+conda init  
+exec bash  
+conda activate slide
 ```
 
-Due to the complexity of collecting logs directly on the C910 device, Experiments 3 and 4 are only available via log-based reproduction.
-However, for Experiment 1 (delay injection), we provide an interface for reproducing results directly on the C910 without relying on pre-collected logs.
 
-To run Experiment 1 directly on the C910, use:
+
+The experiments can be run using provided scripts. To reproduce all experiments related to \ToolName{}, execute:
+
 ```
-./run_with_C910.sh 
-```
-The results will be saved in:
-```
-TraceSynth/tests/results`
+cd /home/synth/slide/tests/experiment  
+./run.sh  
 ```
 
-## A.5 Evaluation and Expected Results
+We also provide a script for Experiment 1 on C910 hardware, which can be executed as follows:
 
-All experiment results are stored in `TraceSynth/tests/results`. Below is a description of each result file:
+```
+./run_with_C910.sh hostname port username password hostpath
+```
 
-- `exp1_inject.png`: Results of Experiment 1 showing the generalizability of the delay injection algorithm
-- `exp1_litmus_trans_results.png`: Results of Experiment 1 showing the additional triggering capability of delay injection
-- `exp2_synth_rvwmo_result.txt`: Output file of Experiment 2 synthesizing the RVWMO memory model
-- `exp2_synth_rvwmo.log`: Log file of Experiment 2 synthesizing the RVWMO memory model
-- `exp3_synth_C910_result.txt`: Output file of Experiment 3 synthesizing the model based on C910 traces
-- `exp3_synth_C910.log`: Log file of Experiment 3 synthesizing the model based on C910 traces
-- `exp4_synth_C910_post_result.txt`:Output file of Experiment 4 synthesizing with the completed C910 dataset
-- `exp4_synth_C910_post.log`: Log file of Experiment 4 synthesizing with the completed C910 dataset
-- `exp4_synth_rvwmo_post_result.txt`: Output file of Experiment 4 synthesizing RVWMO with the completed dataset
-- `exp4_synth_rvwmo_post.log`: Log file of Experiment 4 synthesizing RVWMO with the completed dataset
+
+For experiments related to \textsc{MemSynth}, execute the following commands:
+
+```
+cd /home/synth/memsynth  
+./clear.sh  
+cd case-studies/synthesis/rvwmo  
+./run.sh  
+```
+
+
+
+### Expected Results
+
+For TraceSynth, all experimental results are stored in:
+
+```
+/home/synth/slide/tests/results
+```
+
+
+
+For \textsc{MemSynth}, all experimental results are stored in:
+
+
+```
+/home/synth/memsynth/case-studies/synthesis/rvwmo/result
+```
+
+
