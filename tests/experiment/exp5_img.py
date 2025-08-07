@@ -209,4 +209,4 @@ if __name__ == '__main__':
     pre()
     get_model_data()
     draw_img()
-    draw_img_SC()
+    # draw_img_SC()
