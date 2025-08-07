@@ -28,7 +28,7 @@ We recommend executing the experiments on a recent Ubuntu distribution, equipped
 
 - **Disk Space Requirements:** The Docker image requires approximately 6 GB of disk space.
 
-- **Execution Time (Approximate):** about 10 hours
+- **Execution Time (Approximate):** about 5 hours
 
 - **Public Availability:** Yes.
 
