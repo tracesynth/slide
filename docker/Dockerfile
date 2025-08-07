@@ -53,19 +53,11 @@ ENV PATH=/opt/conda/bin:$PATH
 # -b: This flag, when used with the Miniconda installer, tells the installer to run in "batch" mode, which means it won't prompt for input during the installation process.
 # -p /opt/conda: This specifies the installation prefix, i.e., the directory where Miniconda3 will be installed. In this case, /opt/conda is the target directory.
 
-ARG CACHEBUSTER=1
 RUN  conda config --set show_channel_urls yes && \
  conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main && \
  conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r && \
  conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2 && \
  conda clean -i -y  && conda info && conda create -n slide python=3.12.9 -y
-
-
-RUN git clone https://github.com/tracesynth/slide.git
-
-RUN sudo apt install -y graphviz-dev && cd slide && git checkout main
-
-RUN cd slide && . /opt/conda/bin/activate && conda activate base && conda activate slide && pip install -r requirements.txt
 
 
 RUN sudo apt install -y --no-install-recommends openssh-server nano
@@ -126,10 +118,6 @@ RUN raco pkg config --set catalogs \
     "https://download.racket-lang.org/releases/8.2/catalog/" && \
     for i in 1 2 3; do raco pkg install --auto ocelot && break || sleep 5; done
 
-WORKDIR /home/synth
-
-RUN git clone https://github.com/tracesynth/riscv_memsynth.git
-RUN mv riscv_memsynth memsynth
 
 # openssh-client
 RUN apt-get update && \
@@ -159,3 +147,19 @@ WORKDIR /home/synth
 RUN git clone https://github.com/jamesbornholt/ocelot.git && \
     cd ocelot && \
     raco pkg install
+
+ARG CACHEBUSTER=1
+
+WORKDIR /home/synth
+
+RUN git clone https://github.com/tracesynth/slide.git
+
+RUN sudo apt install -y graphviz-dev && cd slide && git checkout main
+
+RUN cd slide && . /opt/conda/bin/activate && conda activate base && conda activate slide && pip install -r requirements.txt
+
+
+WORKDIR /home/synth
+
+RUN git clone https://github.com/tracesynth/riscv_memsynth.git
+RUN mv riscv_memsynth memsynth

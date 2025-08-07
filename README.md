@@ -104,7 +104,6 @@ For experiments related to MemSynth, execute the following commands:
 
 ```
 cd /home/synth/memsynth  
-./clear.sh  
 cd case-studies/synthesis/rvwmo  
 ./run.sh  
 ```
